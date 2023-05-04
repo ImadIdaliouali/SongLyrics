@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { getSearch } from '../services';
 import { COLORS, FONTS, SIZES } from '../constants';
 import { SongCard } from '../components';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const [search, setSearch] = useState("");
     const [songs, setSongs] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ const HomeScreen = () => {
                     />
                 </View>
                 <TouchableOpacity style={styles.searchBtn} onPress={() => getSongs()}>
-                    <Icon
+                    <Ionicons
                         name="search"
                         size={22}
                         color={COLORS.white}
@@ -54,6 +54,7 @@ const HomeScreen = () => {
                                 title={item.result.title}
                                 artist={item.result.artist_names}
                                 albumArt={item.result.song_art_image_url}
+                                onPress={() => navigation.navigate("details", { songId: item.result.id })}
                             />}
                         />
                         : null)}

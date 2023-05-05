@@ -12,6 +12,7 @@ react-native start
 <div style="display: flex;justify-content: space-between">
      <img src="./assets/screenshot/one.jpg" height="650">
      <img src="./assets/screenshot/two.jpg" height="650">
+     <img src="./assets/screenshot/three.jpg" height="650">
 </div>
 
 ## Links

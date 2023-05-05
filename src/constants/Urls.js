@@ -1,6 +1,6 @@
 const GeniusAPI_BASE_URL = "http://api.genius.com";
 
-const GeniusAPI_KEY = "jAoQgkHr137y5-tDAJry7fpveHG1e7THAesBTbvzRtfyDpST12LeWb5nuDw-UWDk";
+const GeniusAPI_KEY = "e2Pf87eKL_jvqv7rEd3AF7GedfmbIKUEQR8BgNc2kR67M_n35QOr9-3CBVUl61kQ";
 
 const ENDPOINTS = {
     SEARCH: "/search",

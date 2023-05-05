@@ -16,6 +16,7 @@ const DetailsScreen = ({ navigation, route }) => {
     const { songId } = route.params;
 
     const [song, setSong] = useState({});
+    const [description, setDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isFeaturingSelected, setIsFeaturingSelected] = useState(true);
 
@@ -27,102 +28,113 @@ const DetailsScreen = ({ navigation, route }) => {
             .finally(() => setIsLoading(false));
     }, []);
 
-    return (
-        <ScrollView
-            style={styles.container}
-            showsVerticalScrollIndicator={false}
-        >
-            <View style={styles.songArtContainer}>
-                <Image
-                    source={{ uri: song?.song_art_image_url }}
-                    style={styles.songArtImage}
-                    resizeMode="cover"
-                />
+    return isLoading
+        ? (
+            <View style={{ ...styles.container, ...styles.center }}>
+                <ActivityIndicator size="large" color={COLORS.green} />
             </View>
-            <View style={styles.headerContainer}>
-                <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.goBack()}>
-                    <Feather
-                        name="chevron-left"
-                        size={35}
-                        color={COLORS.lightWhite}
+        )
+        : (
+            <ScrollView
+                style={styles.container}
+                showsVerticalScrollIndicator={false}
+            >
+                <View style={styles.songArtContainer}>
+                    <Image
+                        source={{ uri: song?.song_art_image_url }}
+                        style={styles.songArtImage}
+                        resizeMode="cover"
+                    />
+                </View>
+                <View style={styles.headerContainer}>
+                    <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.goBack()}>
+                        <Feather
+                            name="chevron-left"
+                            size={35}
+                            color={COLORS.lightWhite}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                    style={styles.playButton}
+                    activeOpacity={0.5}
+                    onPress={() => Linking.openURL(song?.media[0]?.url)}
+                >
+                    <Ionicons
+                        name="play-circle-outline"
+                        size={70}
+                        color={COLORS.white}
                     />
                 </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-                style={styles.playButton}
-                activeOpacity={0.5}
-                onPress={() => Linking.openURL(song?.media[0]?.url)}
-            >
-                <Ionicons
-                    name="play-circle-outline"
-                    size={70}
-                    color={COLORS.white}
-                />
-            </TouchableOpacity>
-            <View style={styles.titleContainer}>
-                <Text style={styles.titleText} numberOfLines={2}>{song?.title} - {song?.artist_names} </Text>
-                <View style={styles.row}>
-                    <Feather
-                        name="calendar"
-                        size={22}
-                        color={COLORS.primary}
+                <View style={styles.titleContainer}>
+                    <Text style={styles.titleText} numberOfLines={2}>{song?.title} - {song?.artist_names} </Text>
+                    <View style={styles.row}>
+                        <Feather
+                            name="calendar"
+                            size={22}
+                            color={COLORS.primary}
+                        />
+                        <Text style={styles.dateText}>{song?.release_date_with_abbreviated_month_for_display}</Text>
+                    </View>
+                </View>
+                <Text style={styles.albumText}>{song?.album?.name}</Text>
+                <Text style={styles.albumText}>{song?.language}</Text>
+                <View style={styles.descriptionContainer}>
+                    <Text style={styles.descriptionTitle}>Description</Text>
+                    <Text style={styles.descriptionText}>{description}</Text>
+                </View>
+                <View>
+                    <Text style={styles.aboutTitle}>About</Text>
+                    <View style={styles.aboutSubMenuContainer}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => setIsFeaturingSelected(true)}>
+                            <Text
+                                style={{
+                                    ...styles.aboutSubMenuText,
+                                    color: isFeaturingSelected ? COLORS.black : COLORS.lightGrey,
+                                }}
+                            >
+                                Featuring
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => setIsFeaturingSelected(false)}>
+                            <Text
+                                style={{
+                                    ...styles.aboutSubMenuText,
+                                    color: isFeaturingSelected ? COLORS.lightGrey : COLORS.black,
+                                }}
+                            >
+                                Producers
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <FlatList
+                        style={{ marginVertical: 5 }}
+                        data={isFeaturingSelected ? [song?.primary_artist].concat(song?.featured_artists) : song?.producer_artists}
+                        keyExtractor={(item, index) => index}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+                        ListHeaderComponent={() => <ItemSeparator width={20} />}
+                        ListFooterComponent={() => <ItemSeparator width={20} />}
+                        renderItem={({ item }) => <ArtistCard
+                            name={item?.name}
+                            image={item?.image_url}
+                            onPress={() => navigation.navigate("artist", { artistId: item.id })}
+                        />}
                     />
-                    <Text style={styles.dateText}>{song?.release_date_with_abbreviated_month_for_display}</Text>
                 </View>
-            </View>
-            <Text style={styles.albumText}>{song?.album?.name}</Text>
-            <Text style={styles.albumText}>{song?.language}</Text>
-            <View style={styles.lyricsContainer}>
-                <Text style={styles.lyricsTitle}>Lyrics</Text>
-                <Text style={styles.lyricsText}>{song?.id}</Text>
-            </View>
-            <View>
-                <Text style={styles.aboutTitle}>About</Text>
-                <View style={styles.aboutSubMenuContainer}>
-                    <TouchableOpacity activeOpacity={0.5} onPress={() => setIsFeaturingSelected(true)}>
-                        <Text
-                            style={{
-                                ...styles.aboutSubMenuText,
-                                color: isFeaturingSelected ? COLORS.black : COLORS.lightGrey,
-                            }}
-                        >
-                            Featuring
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.5} onPress={() => setIsFeaturingSelected(false)}>
-                        <Text
-                            style={{
-                                ...styles.aboutSubMenuText,
-                                color: isFeaturingSelected ? COLORS.lightGrey : COLORS.black,
-                            }}
-                        >
-                            Producers
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-                <FlatList
-                    style={{ marginVertical: 5 }}
-                    data={isFeaturingSelected ? [song?.primary_artist].concat(song?.featured_artists) : song?.producer_artists}
-                    keyExtractor={(item) => item?.id}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    ItemSeparatorComponent={() => <ItemSeparator width={20} />}
-                    ListHeaderComponent={() => <ItemSeparator width={20} />}
-                    ListFooterComponent={() => <ItemSeparator width={20} />}
-                    renderItem={({ item }) => <ArtistCard
-                        name={item?.name}
-                        image={item?.image_url}
-                    />}
-                />
-            </View>
-        </ScrollView>
-    );
+            </ScrollView>
+        );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.lightWhite,
+    },
+    center: {
+        justifyContent: "center",
+        alignItems: "center",
     },
     songArtContainer: {
         height: setHight(35),
@@ -183,18 +195,18 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         fontFamily: FONTS.BOLD,
     },
-    lyricsContainer: {
+    descriptionContainer: {
         backgroundColor: COLORS.extraLightGrey,
         paddingHorizontal: 20,
         paddingVertical: 10,
         marginVertical: 10,
     },
-    lyricsTitle: {
+    descriptionTitle: {
         fontFamily: FONTS.BOLD,
         fontSize: 18,
         color: COLORS.black,
     },
-    lyricsText: {
+    descriptionText: {
         paddingVertical: 5,
         fontFamily: FONTS.BOLD,
         fontSize: 13,

@@ -11,6 +11,10 @@ const GeniusAPI_HTTP_REQUEST = axios.create({
 
 const getSearch = (search_term) => GeniusAPI_HTTP_REQUEST.get(ENDPOINTS.SEARCH, { params: { q: search_term } });
 
-const getSongById = (id) => GeniusAPI_HTTP_REQUEST.get(`${ENDPOINTS.SONGS}/${id}`)
+const getSongById = (id) => GeniusAPI_HTTP_REQUEST.get(`${ENDPOINTS.SONGS}/${id}`);
 
-export { getSearch, getSongById };
+const getArtistById = (id) => GeniusAPI_HTTP_REQUEST.get(`${ENDPOINTS.ARTISTS}/${id}`);
+
+const getArtistSongs = (id) => GeniusAPI_HTTP_REQUEST.get(`${ENDPOINTS.ARTISTS}/${id}` + ENDPOINTS.SONGS);
+
+export { getSearch, getSongById, getArtistById, getArtistSongs };

@@ -3,12 +3,12 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { COLORS, FONTS } from '../constants';
 
-const ArtistCard = ({ name, image }) => {
+const ArtistCard = ({ name, image, onPress }) => {
     return (
         <TouchableOpacity
             style={styles.container}
             activeOpacity={0.5}
-            onPress={() => { }}
+            onPress={() => onPress()}
         >
             <Image
                 source={{ uri: image }}

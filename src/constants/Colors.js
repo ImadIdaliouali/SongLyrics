@@ -7,4 +7,5 @@ export default {
     extraLightGrey: "#E5E5E5",
     black: "#000",
     green: "#00be63",
+    blue: "#0096f1",
 }

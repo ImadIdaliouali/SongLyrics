@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     },
     lyricsTitle: {
         fontFamily: FONTS.BOLD,
-        fontSize: 18,
+        fontSize: SIZES.large,
         color: COLORS.black,
     },
     activityIndicator: {
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         color: COLORS.black,
         fontFamily: FONTS.BOLD,
-        fontSize: 18,
+        fontSize: SIZES.large,
     },
     aboutSubMenuContainer: {
         marginLeft: 20,

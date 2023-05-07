@@ -17,4 +17,6 @@ const getArtistById = (id) => GeniusAPI_HTTP_REQUEST.get(`${ENDPOINTS.ARTISTS}/$
 
 const getArtistSongs = (id) => GeniusAPI_HTTP_REQUEST.get(`${ENDPOINTS.ARTISTS}/${id}` + ENDPOINTS.SONGS);
 
-export { getSearch, getSongById, getArtistById, getArtistSongs };
+const getSongLyrics = (url) => axios.get(url);
+
+export { getSearch, getSongById, getArtistById, getArtistSongs, getSongLyrics };
